@@ -27,7 +27,7 @@ public class ExtentReportListener implements ITestListener {
     public void onTestSuccess(ITestResult result){
         String testName = result.getMethod().getMethodName();
         String testDescription = result.getMethod().getDescription();
-        test = extentReports.createTest(testName,testDescription);
+//        test = extentReports.createTest(testName,testDescription);
         test.log(Status.PASS,"Testcase Passed");
     }
 
@@ -35,7 +35,7 @@ public class ExtentReportListener implements ITestListener {
     public void onTestFailure(ITestResult result){
         String testName = result.getMethod().getMethodName();
         String testDescription = result.getMethod().getDescription();
-        test = extentReports.createTest(testName,testDescription);
+//        test = extentReports.createTest(testName,testDescription);
         test.log(Status.FAIL,"Test: "+testName+" \nfor: "+testDescription+" failed");
         test.log(Status.FAIL,result.getThrowable());
 
@@ -54,7 +54,7 @@ public class ExtentReportListener implements ITestListener {
     public void onTestSkipped(ITestResult result){
         String testName = result.getMethod().getMethodName();
         String testDescription = result.getMethod().getDescription();
-        test = extentReports.createTest(testName,testDescription);
+//        test = extentReports.createTest(testName,testDescription);
         test.log(Status.SKIP,"Skipped this testcase");
     }
 
