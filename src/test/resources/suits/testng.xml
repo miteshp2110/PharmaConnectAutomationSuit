@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="PharmaConnect Automation Test Suit">
+    <listeners>
+        <listener class-name="com.pharmaconnect.automation.utils.ExtentReportListener" />
+    </listeners>
+    <parameter name="browser" value="chrome"/>
+    <test name="Full Application Test">
+        <packages>
+            <package name="com.pharmaconnect.automation.tests"/>
+        </packages>
+    </test>
+</suite>

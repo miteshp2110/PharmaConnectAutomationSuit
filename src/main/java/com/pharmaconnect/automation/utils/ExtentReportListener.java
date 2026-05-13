@@ -17,7 +17,7 @@ public class ExtentReportListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result){
-        String testName = result.getTestName();
+        String testName = result.getMethod().getMethodName();
         String testDescription = result.getMethod().getDescription();
         test=extentReports.createTest(testName,testDescription);
         test.log(Status.INFO,"Test Execution Started");
@@ -25,7 +25,7 @@ public class ExtentReportListener implements ITestListener {
 
     @Override
     public void onTestSuccess(ITestResult result){
-        String testName = result.getTestName();
+        String testName = result.getMethod().getMethodName();
         String testDescription = result.getMethod().getDescription();
         test = extentReports.createTest(testName,testDescription);
         test.log(Status.PASS,"Testcase Passed");
@@ -33,7 +33,7 @@ public class ExtentReportListener implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result){
-        String testName = result.getTestName();
+        String testName = result.getMethod().getMethodName();
         String testDescription = result.getMethod().getDescription();
         test = extentReports.createTest(testName,testDescription);
         test.log(Status.FAIL,"Test: "+testName+" \nfor: "+testDescription+" failed");
@@ -52,7 +52,7 @@ public class ExtentReportListener implements ITestListener {
 
     @Override
     public void onTestSkipped(ITestResult result){
-        String testName = result.getTestName();
+        String testName = result.getMethod().getMethodName();
         String testDescription = result.getMethod().getDescription();
         test = extentReports.createTest(testName,testDescription);
         test.log(Status.SKIP,"Skipped this testcase");
