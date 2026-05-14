@@ -11,7 +11,7 @@ public class ExcelUtil {
 
     public static Object [][] getExcelData(String sheetName){
         String projectRoot = System.getProperty("user.dir");
-        String excelPath = projectRoot + "src/test/resources/testData/"+ConfigReader.getProperty("testDataFileName");
+        String excelPath = projectRoot + "/src/test/resources/testData/"+ConfigReader.getProperty("testDataFileName");
         File file = new File(excelPath);
         Object[][] data = null;
         try(FileInputStream fis = new FileInputStream(file)){
@@ -32,7 +32,7 @@ public class ExcelUtil {
 
         }
         catch (Exception e){
-            throw new RuntimeException("Cannot find test data excel file");
+            throw new RuntimeException("Failed to read Excel file at path: " + excelPath, e);
         }
         return data;
     }

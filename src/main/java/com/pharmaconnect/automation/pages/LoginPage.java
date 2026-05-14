@@ -1,6 +1,7 @@
 package com.pharmaconnect.automation.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -24,7 +25,7 @@ public class LoginPage {
     private By pharmacyLoginButton = By.xpath("//button[text()=('Pharmacy')]");
     private By adminLoginButton = By.xpath("//button[text()=('Admin')]");
     private By authTitle = By.cssSelector("h1.pc-auth-title");
-    private By alterText = By.cssSelector("div.pc-alert");
+    private By alertText = By.cssSelector("div.pc-alert");
 
     public void enterEmail(String email){
         wait.until(ExpectedConditions.visibilityOfElementLocated(emailInput)).sendKeys(email);
@@ -48,6 +49,9 @@ public class LoginPage {
     public String getAuthTitleText(){
         return wait.until(ExpectedConditions.visibilityOfElementLocated(authTitle)).getText();
     }
+    public String getAlertText(){
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(alertText)).getText();
+    }
 
     public void loginAsUser(String email , String password){
         enterEmail(email);
@@ -68,7 +72,15 @@ public class LoginPage {
     }
 
     public boolean isAlertVisible(){
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(alterText)).isDisplayed();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(alertText)).isDisplayed();
+    }
+
+    public boolean isRedirected(String url){
+       try{
+           return wait.until(ExpectedConditions.urlContains(url));
+       } catch (TimeoutException e) {
+           return false;
+       }
     }
 
 
