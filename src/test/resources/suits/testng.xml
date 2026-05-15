@@ -5,9 +5,14 @@
         <listener class-name="com.pharmaconnect.automation.utils.ExtentReportListener" />
     </listeners>
     <parameter name="browser" value="chrome"/>
-    <test name="Full Application Test">
-        <packages>
-            <package name="com.pharmaconnect.automation.tests"/>
-        </packages>
+    <test name="Application Login Test" enabled="false">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.LoginTest"/>
+        </classes>
+    </test>
+    <test name="Application Register Test">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.RegisterTest"/>
+        </classes>
     </test>
 </suite>
