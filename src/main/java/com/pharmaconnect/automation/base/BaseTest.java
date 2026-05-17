@@ -2,6 +2,7 @@ package com.pharmaconnect.automation.base;
 
 import com.pharmaconnect.automation.manager.PageObjectManager;
 import com.pharmaconnect.automation.utils.ConfigReader;
+import com.pharmaconnect.automation.utils.TestContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -86,6 +87,7 @@ public class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void cleanUp() {
+        TestContext.clear();
         if (webDriver != null) {
             webDriver.quit();
         }

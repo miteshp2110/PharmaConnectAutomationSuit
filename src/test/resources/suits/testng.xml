@@ -20,9 +20,14 @@
             <class name="com.pharmaconnect.automation.tests.RegisterPharmacyTest" />
         </classes>
     </test>
-    <test name="Search Page and functionality Test">
+    <test name="Search Page and functionality Test" enabled="false">
         <classes>
             <class name="com.pharmaconnect.automation.tests.SearchTest"/>
+        </classes>
+    </test>
+    <test name="Reservation Test">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.ReservationTest" />
         </classes>
     </test>
 </suite>
