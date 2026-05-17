@@ -5,6 +5,7 @@ import com.pharmaconnect.automation.pages.LoginPage;
 import com.pharmaconnect.automation.utils.ConfigReader;
 import com.pharmaconnect.automation.utils.ExcelUtil;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -49,7 +50,16 @@ public class LoginTest extends BaseTest {
 
     @Test(testName = "Login Credentials Validation", description = "The test validates the login functionality with different cases"
     ,dataProvider = "loginDataProvider")
-    public void loginValidation(String role,String email,String password,String result){
+    public void loginValidation(String testName , String description,String role,String email,String password,String result){
+
+
+        description = description + "<br><br><b>Given Data:</b><br>"
+                + "<b>Email:</b> "           + email           + "<br>"
+                + "<b>Password:</b> "        + password        + "<br>"
+                + "<b>Role:</b> "+ role + "<br>"
+                + "<b>Expected Result:</b> " + result;
+        Reporter.getCurrentTestResult().getMethod().setDescription(description);
+        Reporter.getCurrentTestResult().setTestName(testName);
         webDriver.get(ConfigReader.getProperty("login.url"));
         LoginPage loginPage = pageObjectManager.getLoginPage();
         if(role.equalsIgnoreCase("user")){

@@ -18,7 +18,7 @@ public class ExtentReportListener implements ITestListener {
     @Override
     public void onTestStart(ITestResult result){
         String testName = result.getMethod().getMethodName();
-//        String testDescription = result.getMethod().getDescription();
+        String testDescription = result.getMethod().getDescription();
         test=extentReports.createTest(testName);
         test.log(Status.INFO,"Test Execution Started");
     }
@@ -28,7 +28,7 @@ public class ExtentReportListener implements ITestListener {
         String testName = result.getMethod().getMethodName();
         String testDescription = result.getMethod().getDescription();
 //        test = extentReports.createTest(testName,testDescription);
-        test.log(Status.PASS,"Testcase Passed");
+        test.log(Status.PASS,"Testcase Passed: <br/>"+testDescription);
     }
 
     @Override

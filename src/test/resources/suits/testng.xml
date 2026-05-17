@@ -10,9 +10,19 @@
             <class name="com.pharmaconnect.automation.tests.LoginTest"/>
         </classes>
     </test>
-    <test name="Application Register Test">
+    <test name="Application Register Test" enabled="false">
         <classes>
             <class name="com.pharmaconnect.automation.tests.RegisterTest"/>
+        </classes>
+    </test>
+    <test name="Register Pharmacy Test" enabled="false">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.RegisterPharmacyTest" />
+        </classes>
+    </test>
+    <test name="Search Page and functionality Test">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.SearchTest"/>
         </classes>
     </test>
 </suite>

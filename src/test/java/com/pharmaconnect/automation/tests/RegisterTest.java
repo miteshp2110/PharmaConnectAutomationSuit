@@ -68,6 +68,12 @@ public class RegisterTest extends BaseTest {
             String confirmPassword,
             String expectedResult
     ) {
+        if(email.equalsIgnoreCase("generatedDynamically")){
+            email = RandomGenerator.generateRandomEmail(fullName);
+        }
+        if(phone.equalsIgnoreCase("generatedDynamically")){
+            phone = RandomGenerator.generateRandomPhone();
+        }
         description = description + "<br><br><b>Given Data:</b><br>"
                 + "<b>Full Name:</b> "       + fullName        + "<br>"
                 + "<b>Email:</b> "           + email           + "<br>"
@@ -80,12 +86,7 @@ public class RegisterTest extends BaseTest {
                 + "<b>Expected Result:</b> " + expectedResult;
         Reporter.getCurrentTestResult().getMethod().setDescription(description);
         Reporter.getCurrentTestResult().setTestName(testName);
-        if(email.equalsIgnoreCase("generatedDynamically")){
-            email = RandomGenerator.generateRandomEmail(fullName);
-        }
-        if(phone.equalsIgnoreCase("generatedDynamically")){
-            phone = RandomGenerator.generateRandomPhone();
-        }
+
         webDriver.get(ConfigReader.getProperty("register.url"));
         RegisterPage registerPage = pageObjectManager.getRegisterPage();
 
