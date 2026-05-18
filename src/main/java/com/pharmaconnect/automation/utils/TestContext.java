@@ -19,4 +19,8 @@ public class TestContext {
     public static void clear() {
         context.get().clear();
     }
+    public static String getOrDefault(String key, String defaultValue) {
+        String value = context.get().get(key);
+        return value != null ? value : defaultValue;
+    }
 }

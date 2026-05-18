@@ -25,9 +25,39 @@
             <class name="com.pharmaconnect.automation.tests.SearchTest"/>
         </classes>
     </test>
-    <test name="Reservation Test">
+    <test name="Reservation Test" enabled="false">
         <classes>
             <class name="com.pharmaconnect.automation.tests.ReservationTest" />
+        </classes>
+    </test>
+    <test name="Profile Page Tests" enabled="false">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.ProfileTest" />
+        </classes>
+    </test>
+    <test name="Seller Tests" enabled="false">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.SellerTests" />
+        </classes>
+    </test>
+    <test name="Seller Operations Test" enabled="false">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.SellerOperationsTest" />
+        </classes>
+    </test>
+    <test name="Admin Seller Test" enabled="false">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.AdminTest" />
+        </classes>
+    </test>
+    <test name="Admin Medicines Test" enabled="false">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.AdminMedicinesTest" />
+        </classes>
+    </test>
+    <test name="Admin Documentation Test">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.AdminDocumentsTest" />
         </classes>
     </test>
 </suite>

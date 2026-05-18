@@ -13,6 +13,14 @@ public class PageObjectManager {
     private SearchPage searchPage;
     private MyReservationsPage myReservationsPage;
     private ProfilePage profilePage;
+    private SellerDashboardPage sellerDashboardPage;
+    private SellerInventoryPage sellerInventoryPage;
+    private SellerReservationsPage sellerReservationsPage;
+    private SellerDocumentsPage sellerDocumentsPage;
+    private AdminSellerPage adminSellerPage;
+    private AdminMedicinesPage adminMedicinesPage;
+    private AdminDocumentsPage adminDocumentsPage;
+
 
     public PageObjectManager(WebDriver driver){
         this.driver=driver;
@@ -56,5 +64,36 @@ public class PageObjectManager {
             profilePage = new ProfilePage(driver);
         }
         return profilePage;
+    }
+
+    public SellerDashboardPage getSellerDashboardPage() {
+        return (sellerDashboardPage == null)
+                ? sellerDashboardPage = new SellerDashboardPage(driver) : sellerDashboardPage;
+    }
+
+    public SellerInventoryPage getSellerInventoryPage() {
+        return (sellerInventoryPage == null)
+                ? sellerInventoryPage = new SellerInventoryPage(driver) : sellerInventoryPage;
+    }
+
+    public SellerReservationsPage getSellerReservationsPage() {
+        return (sellerReservationsPage == null)
+                ? sellerReservationsPage = new SellerReservationsPage(driver) : sellerReservationsPage;
+    }
+
+    public SellerDocumentsPage getSellerDocumentsPage() {
+        return (sellerDocumentsPage == null)
+                ? sellerDocumentsPage = new SellerDocumentsPage(driver) : sellerDocumentsPage;
+    }
+    public AdminSellerPage getAdminSellerPage(){
+        return(adminSellerPage == null) ? adminSellerPage=new AdminSellerPage(driver) : adminSellerPage;
+    }
+    public AdminMedicinesPage getAdminMedicinesPage() {
+        return (adminMedicinesPage == null)
+                ? adminMedicinesPage = new AdminMedicinesPage(driver) : adminMedicinesPage;
+    }
+    public AdminDocumentsPage getAdminDocumentsPage() {
+        return (adminDocumentsPage == null)
+                ? adminDocumentsPage = new AdminDocumentsPage(driver) : adminDocumentsPage;
     }
 }
