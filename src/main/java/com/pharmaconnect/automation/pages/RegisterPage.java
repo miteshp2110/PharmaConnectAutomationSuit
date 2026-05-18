@@ -34,7 +34,7 @@ public class RegisterPage {
 
     public RegisterPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         this.actions = new Actions(driver);
     }
 

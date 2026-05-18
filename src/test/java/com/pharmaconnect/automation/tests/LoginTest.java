@@ -13,31 +13,31 @@ public class LoginTest extends BaseTest {
 
     @Test(testName = "Empty Fields Validation", description = "This test is to validate that the login functionality does not work it there are fields entered")
     public void validateEmptyFields(){
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         loginPage.clickLoginButton();
         Assert.assertTrue(loginPage.isAlertVisible(),"The alert message was not displayed");
     }
 
     @Test(testName = "Auth title Validation", description = "Verify it displays correct Auth Title for different login roles")
     public void validateAuthTitleForUser(){
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         String authTitle = loginPage.getAuthTitleText();
         Assert.assertEquals(authTitle,"User Login","The Auth Title did not match the User Login Role");
     }
     @Test(testName = "Auth title Validation", description = "Verify it displays correct Auth Title for different login roles")
     public void validateAuthTitleForPharmacy(){
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         loginPage.switchToPharmacyLogin();
         String authTitle = loginPage.getAuthTitleText();
         Assert.assertEquals(authTitle,"Pharmacy Login","The Auth Title did not match the Pharmacy Login Role");
     }
     @Test(testName = "Auth title Validation", description = "Verify it displays correct Auth Title for different login roles")
     public void validateAuthTitleForAdmin(){
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         loginPage.switchToAdminLogin();
         String authTitle = loginPage.getAuthTitleText();
         Assert.assertEquals(authTitle,"Admin Login","The Auth Title did not match the Admin Login Role");
@@ -60,8 +60,8 @@ public class LoginTest extends BaseTest {
                 + "<b>Expected Result:</b> " + result;
         Reporter.getCurrentTestResult().getMethod().setDescription(description);
         Reporter.getCurrentTestResult().setTestName(testName);
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         if(role.equalsIgnoreCase("user")){
             loginPage.loginAsUser(email,password);
         }

@@ -1,6 +1,7 @@
 package com.pharmaconnect.automation.tests;
 
 import com.pharmaconnect.automation.base.BaseTest;
+import com.pharmaconnect.automation.base.StatefulBaseTest;
 import com.pharmaconnect.automation.pages.LoginPage;
 import com.pharmaconnect.automation.pages.SellerDashboardPage;
 import com.pharmaconnect.automation.pages.SellerDocumentsPage;
@@ -10,16 +11,13 @@ import com.pharmaconnect.automation.utils.ConfigReader;
 import com.pharmaconnect.automation.utils.TestContext;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.time.Duration;
 
-public class SellerOperationsTest extends BaseTest {
+public class SellerOperationsTest extends StatefulBaseTest {
 
     private SellerInventoryPage inventoryPage;
     private SellerReservationsPage reservationsPage;
@@ -27,39 +25,23 @@ public class SellerOperationsTest extends BaseTest {
     private SellerDashboardPage dashboardPage;
     private WebDriverWait wait;
 
-    @Override
-    @BeforeMethod
-    @Parameters("browser")
-    public void setup(String browser) {
-        if (webDriver == null) {
-            super.setup(browser);
-            wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
-            loginAsPharmacy();
-        }
-        inventoryPage    = pageObjectManager.getSellerInventoryPage();
-        reservationsPage = pageObjectManager.getSellerReservationsPage();
-        documentsPage    = pageObjectManager.getSellerDocumentsPage();
-        dashboardPage    = pageObjectManager.getSellerDashboardPage();
+
+    @BeforeClass
+    public void classSetup() {
+
+        wait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(10));
+        inventoryPage    = getPageObjectManager().getSellerInventoryPage();
+        reservationsPage = getPageObjectManager().getSellerReservationsPage();
+        documentsPage    = getPageObjectManager().getSellerDocumentsPage();
+        dashboardPage    = getPageObjectManager().getSellerDashboardPage();
+        loginAsPharmacy();
     }
 
-    @Override
-    @org.testng.annotations.AfterMethod(alwaysRun = true)
-    public void cleanUp() {
-        // Keep browser alive across all tests
-    }
 
-    @AfterClass(alwaysRun = true)
-    public void tearDownClass() {
-        TestContext.clear();
-        if (webDriver != null) {
-            webDriver.quit();
-            webDriver = null;
-        }
-    }
 
     private void loginAsPharmacy() {
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         loginPage.enterEmail(ConfigReader.getProperty("test.pharmacy.email"));
         loginPage.enterPassword(ConfigReader.getProperty("test.pharmacy.password"));
         loginPage.clickLoginButton();
@@ -583,7 +565,7 @@ public class SellerOperationsTest extends BaseTest {
             description = "Verify the document type dropdown on the documents page contains Pharmacy License, GST Certificate, Drug License and Other")
     public void documentTypeDropdownHasFourOptions() {
         documentsPage.navigateTo(ConfigReader.getProperty("base.url"));
-        int optionCount = webDriver.findElements(
+        int optionCount = getWebDriver().findElements(
                 org.openqa.selenium.By.cssSelector("select option")).size();
         Assert.assertEquals(optionCount, 4,
                 "Expected 4 document type options but found: " + optionCount);
@@ -615,7 +597,7 @@ public class SellerOperationsTest extends BaseTest {
     public void selectGSTCertificateDocumentType() {
         documentsPage.navigateTo(ConfigReader.getProperty("base.url"));
         documentsPage.selectDocumentType("GST_CERTIFICATE");
-        String selected = webDriver.findElement(
+        String selected = getWebDriver().findElement(
                         org.openqa.selenium.By.cssSelector("select.ng-valid"))
                 .getAttribute("value");
         Assert.assertEquals(selected, "GST_CERTIFICATE",
@@ -628,7 +610,7 @@ public class SellerOperationsTest extends BaseTest {
     public void selectDrugLicenseDocumentType() {
         documentsPage.navigateTo(ConfigReader.getProperty("base.url"));
         documentsPage.selectDocumentType("DRUG_LICENSE");
-        String selected = webDriver.findElement(
+        String selected = getWebDriver().findElement(
                         org.openqa.selenium.By.cssSelector("select.ng-valid"))
                 .getAttribute("value");
         Assert.assertEquals(selected, "DRUG_LICENSE",
@@ -650,14 +632,14 @@ public class SellerOperationsTest extends BaseTest {
 
         boolean successToastShown = !inventoryPage.getToastSuccessMessage()
                 .equals("No success toast");
-        boolean staysOnDocuments  = webDriver.getCurrentUrl()
+        boolean staysOnDocuments  = getWebDriver().getCurrentUrl()
                 .contains("/seller/documents");
-        boolean redirectsToDash   = webDriver.getCurrentUrl()
+        boolean redirectsToDash   = getWebDriver().getCurrentUrl()
                 .contains("/seller/dashboard");
 
         Assert.assertTrue(successToastShown || staysOnDocuments || redirectsToDash,
                 "No confirmation after document upload. URL: "
-                        + webDriver.getCurrentUrl());
+                        + getWebDriver().getCurrentUrl());
     }
 
     // ══════════════════════════════════════════════════════════════
@@ -690,7 +672,7 @@ public class SellerOperationsTest extends BaseTest {
         dashboardPage.clickLogout();
         Assert.assertTrue(dashboardPage.isRedirected("/"),
                 "Logout did not redirect to login page. URL: "
-                        + webDriver.getCurrentUrl());
+                        + getWebDriver().getCurrentUrl());
     }
 
     // ══════════════════════════════════════════════════════════════

@@ -1,54 +1,36 @@
 package com.pharmaconnect.automation.tests;
 
 import com.pharmaconnect.automation.base.BaseTest;
+import com.pharmaconnect.automation.base.StatefulBaseTest;
 import com.pharmaconnect.automation.pages.AdminMedicinesPage;
 import com.pharmaconnect.automation.pages.LoginPage;
 import com.pharmaconnect.automation.utils.ConfigReader;
 import com.pharmaconnect.automation.utils.TestContext;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 
-public class AdminMedicinesTest extends BaseTest {
+public class AdminMedicinesTest extends StatefulBaseTest {
 
     private AdminMedicinesPage medicinesPage;
     private WebDriverWait wait;
 
-    @Override
-    @BeforeMethod
-    @Parameters("browser")
-    public void setup(String browser) {
-        if (webDriver == null) {
-            super.setup(browser);
-            wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
-            loginAsAdmin();
-        }
-        medicinesPage = pageObjectManager.getAdminMedicinesPage();
+    @BeforeClass
+    public void classSetup() {
+        wait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(10));
+        medicinesPage = getPageObjectManager().getAdminMedicinesPage();
+        loginAsAdmin();
     }
 
-    @Override
-    @org.testng.annotations.AfterMethod(alwaysRun = true)
-    public void cleanUp() {
-        // Keep browser alive
-    }
 
-    @AfterClass(alwaysRun = true)
-    public void tearDownClass() {
-        TestContext.clear();
-        if (webDriver != null) {
-            webDriver.quit();
-            webDriver = null;
-        }
-    }
+
+
 
     private void loginAsAdmin() {
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         loginPage.enterEmail(ConfigReader.getProperty("test.admin.email"));
         loginPage.enterPassword(ConfigReader.getProperty("test.admin.password"));
         loginPage.clickLoginButton();
@@ -429,6 +411,6 @@ public class AdminMedicinesTest extends BaseTest {
         medicinesPage.clickLogout();
         Assert.assertTrue(medicinesPage.isRedirected("/"),
                 "Logout did not redirect to login. URL: "
-                        + webDriver.getCurrentUrl());
+                        + getWebDriver().getCurrentUrl());
     }
 }

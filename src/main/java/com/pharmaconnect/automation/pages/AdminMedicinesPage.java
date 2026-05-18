@@ -76,7 +76,7 @@ public class AdminMedicinesPage {
 
     public AdminMedicinesPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
     // ── Navigation ────────────────────────────────────────────────

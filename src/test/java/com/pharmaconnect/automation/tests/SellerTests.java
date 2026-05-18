@@ -1,6 +1,7 @@
 package com.pharmaconnect.automation.tests;
 
 import com.pharmaconnect.automation.base.BaseTest;
+import com.pharmaconnect.automation.base.StatefulBaseTest;
 import com.pharmaconnect.automation.pages.LoginPage;
 import com.pharmaconnect.automation.pages.SellerDashboardPage;
 import com.pharmaconnect.automation.pages.SellerDocumentsPage;
@@ -9,49 +10,30 @@ import com.pharmaconnect.automation.pages.SellerReservationsPage;
 import com.pharmaconnect.automation.utils.ConfigReader;
 import org.openqa.selenium.By;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
-public class SellerTests extends BaseTest {
+public class SellerTests extends StatefulBaseTest {
 
     private SellerDashboardPage dashboardPage;
     private SellerInventoryPage inventoryPage;
     private SellerReservationsPage reservationsPage;
     private SellerDocumentsPage documentsPage;
 
-    @Override
-    @BeforeMethod
-    @Parameters("browser")
-    public void setup(String browser) {
-        if (webDriver == null) {
-            super.setup(browser);
-            loginAsPharmacy();
-        }
-        dashboardPage    = pageObjectManager.getSellerDashboardPage();
-        inventoryPage    = pageObjectManager.getSellerInventoryPage();
-        reservationsPage = pageObjectManager.getSellerReservationsPage();
-        documentsPage    = pageObjectManager.getSellerDocumentsPage();
+    @BeforeClass
+    public void classSetup() {
+        
+        dashboardPage    = getPageObjectManager().getSellerDashboardPage();
+        inventoryPage    = getPageObjectManager().getSellerInventoryPage();
+        reservationsPage = getPageObjectManager().getSellerReservationsPage();
+        documentsPage    = getPageObjectManager().getSellerDocumentsPage();
+        loginAsPharmacy();
     }
 
-    @Override
-    @org.testng.annotations.AfterMethod(alwaysRun = true)
-    public void cleanUp() {
-        // Keep browser alive
-    }
 
-    @AfterClass(alwaysRun = true)
-    public void tearDownClass() {
-        if (webDriver != null) {
-            webDriver.quit();
-            webDriver = null;
-        }
-    }
 
     private void loginAsPharmacy() {
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         loginPage.enterEmail(ConfigReader.getProperty("test.pharmacy.email"));
         loginPage.enterPassword(ConfigReader.getProperty("test.pharmacy.password"));
         loginPage.clickLoginButton();
@@ -218,7 +200,7 @@ public class SellerTests extends BaseTest {
             description = "Verify all 5 filter buttons — All, Pending, Claimed, Expired, Cancelled — are present on the page")
     public void allFilterButtonsVisible() {
         reservationsPage.navigateTo(ConfigReader.getProperty("base.url"));
-        int filterCount = webDriver.findElements(By.cssSelector(".filter-row button")).size();
+        int filterCount = getWebDriver().findElements(By.cssSelector(".filter-row button")).size();
         Assert.assertEquals(filterCount, 5,
                 "Expected 5 filter buttons but found: " + filterCount);
     }
@@ -297,6 +279,6 @@ public class SellerTests extends BaseTest {
         dashboardPage.navigateTo(ConfigReader.getProperty("base.url"));
         dashboardPage.clickLogout();
         Assert.assertTrue(dashboardPage.isRedirected("/"),
-                "Logout did not redirect to login. URL: " + webDriver.getCurrentUrl());
+                "Logout did not redirect to login. URL: " + getWebDriver().getCurrentUrl());
     }
 }

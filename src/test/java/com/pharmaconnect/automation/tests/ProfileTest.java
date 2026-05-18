@@ -1,52 +1,38 @@
 package com.pharmaconnect.automation.tests;
 
 import com.pharmaconnect.automation.base.BaseTest;
+import com.pharmaconnect.automation.base.StatefulBaseTest;
 import com.pharmaconnect.automation.pages.LoginPage;
 import com.pharmaconnect.automation.pages.ProfilePage;
 import com.pharmaconnect.automation.utils.ConfigReader;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class ProfileTest extends BaseTest {
+public class ProfileTest extends StatefulBaseTest {
 
     private ProfilePage profilePage;
 
     // ── Keep browser alive across all profile tests ───────────────
-    @Override
-    @BeforeMethod
-    @Parameters("browser")
-    public void setup(String browser) {
-        if (webDriver == null) {
-            super.setup(browser);
-            loginOnce();
-        }
-        profilePage = pageObjectManager.getProfilePage();
+
+    @BeforeClass
+    public void classSetup() {
+
+        profilePage = getPageObjectManager().getProfilePage();
         profilePage.navigateTo(ConfigReader.getProperty("base.url"));
+        loginOnce();
     }
 
-    @Override
-    @org.testng.annotations.AfterMethod(alwaysRun = true)
-    public void cleanUp() {
-        // Keep browser alive between tests
-    }
 
-    @org.testng.annotations.AfterClass(alwaysRun = true)
-    public void tearDownClass() {
-        if (webDriver != null) {
-            webDriver.quit();
-            webDriver = null;
-        }
-    }
 
     private void loginOnce() {
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         loginPage.enterEmail(ConfigReader.getProperty("test.user.email"));
         loginPage.enterPassword(ConfigReader.getProperty("test.user.password"));
         loginPage.clickLoginButton();
         loginPage.isRedirected("/search");
+        getWebDriver().navigate().to(ConfigReader.getProperty("profile.url"));
     }
 
     // ── TC1 — Page Loads ──────────────────────────────────────────
@@ -177,7 +163,7 @@ public class ProfileTest extends BaseTest {
     public void searchMedicinesButtonNavigatesToSearch() {
         profilePage.clickSearchMedicines();
         Assert.assertTrue(profilePage.isRedirected("/search"),
-                "Search Medicines button did not navigate to search. URL: " + webDriver.getCurrentUrl());
+                "Search Medicines button did not navigate to search. URL: " + getWebDriver().getCurrentUrl());
     }
 
     // ── TC14 — My Reservations Button ─────────────────────────────
@@ -185,9 +171,10 @@ public class ProfileTest extends BaseTest {
             testName = "My Reservations button navigates to reservations page",
             description = "Click the My Reservations button on the profile page and verify navigation to the reservations page")
     public void myReservationsButtonNavigatesToReservations() {
+        getWebDriver().navigate().to(ConfigReader.getProperty("profile.url"));
         profilePage.clickMyReservations();
         Assert.assertTrue(profilePage.isRedirected("/my-reservations"),
-                "My Reservations button did not navigate correctly. URL: " + webDriver.getCurrentUrl());
+                "My Reservations button did not navigate correctly. URL: " + getWebDriver().getCurrentUrl());
     }
 
     // ── TC15 — Logo Navigation ────────────────────────────────────
@@ -197,7 +184,7 @@ public class ProfileTest extends BaseTest {
     public void logoNavigatesToSearch() {
         profilePage.clickLogo();
         Assert.assertTrue(profilePage.isRedirected("/search"),
-                "Logo did not navigate to search. URL: " + webDriver.getCurrentUrl());
+                "Logo did not navigate to search. URL: " + getWebDriver().getCurrentUrl());
     }
 
     // ── TC16 — Logout ─────────────────────────────────────────────
@@ -208,6 +195,6 @@ public class ProfileTest extends BaseTest {
     public void logoutRedirectsToLogin() {
         profilePage.clickLogout();
         Assert.assertTrue(profilePage.isRedirected("/"),
-                "Logout did not redirect to Home. URL: " + webDriver.getCurrentUrl());
+                "Logout did not redirect to Home. URL: " + getWebDriver().getCurrentUrl());
     }
 }

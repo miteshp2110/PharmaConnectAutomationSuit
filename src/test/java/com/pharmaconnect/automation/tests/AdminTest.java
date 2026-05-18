@@ -1,55 +1,36 @@
 package com.pharmaconnect.automation.tests;
 
 import com.pharmaconnect.automation.base.BaseTest;
+import com.pharmaconnect.automation.base.StatefulBaseTest;
 import com.pharmaconnect.automation.pages.AdminSellerPage;
 import com.pharmaconnect.automation.pages.LoginPage;
 import com.pharmaconnect.automation.utils.ConfigReader;
 import com.pharmaconnect.automation.utils.TestContext;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.util.Arrays;
 
-public class AdminTest extends BaseTest {
+public class AdminTest extends StatefulBaseTest {
 
     private AdminSellerPage adminPage;
     private WebDriverWait wait;
 
-    @Override
-    @BeforeMethod
-    @Parameters("browser")
-    public void setup(String browser) {
-        if (webDriver == null) {
-            super.setup(browser);
-            wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
-            loginAsAdmin();
-        }
-        adminPage = pageObjectManager.getAdminSellerPage();
+
+    @BeforeClass
+    public void classSetup() {
+        wait = new WebDriverWait(getWebDriver(), Duration.ofSeconds(10));
+        adminPage = getPageObjectManager().getAdminSellerPage();
+        loginAsAdmin();
     }
 
-    @Override
-    @org.testng.annotations.AfterMethod(alwaysRun = true)
-    public void cleanUp() {
-        // Keep browser alive
-    }
 
-    @AfterClass(alwaysRun = true)
-    public void tearDownClass() {
-        TestContext.clear();
-        if (webDriver != null) {
-            webDriver.quit();
-            webDriver = null;
-        }
-    }
 
     private void loginAsAdmin() {
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         loginPage.enterEmail(ConfigReader.getProperty("test.admin.email"));
         loginPage.enterPassword(ConfigReader.getProperty("test.admin.password"));
         loginPage.clickLoginButton();
@@ -103,8 +84,9 @@ public class AdminTest extends BaseTest {
     @Test(priority = 5,
             testName = "Pending tab count badge shows number of pending applications",
             description = "Verify the count badge on the Pending Applications tab shows a number greater than zero")
-    public void pendingTabCountIsVisible() {
+    public void pendingTabCountIsVisible() throws InterruptedException {
         adminPage.navigateTo(ConfigReader.getProperty("base.url"));
+        Thread.sleep(2000);
         int count = adminPage.getPendingTabCount();
         Assert.assertTrue(count >= 0,
                 "Pending tab count badge shows invalid value: " + count);
@@ -287,12 +269,13 @@ public class AdminTest extends BaseTest {
             testName = "Approved pharmacy appears in All Pharmacies tab",
             description = "After approving, switch to All Pharmacies tab and verify the approved pharmacy is listed there",
             dependsOnMethods = "approvingPharmacyRemovesFromPendingList")
-    public void approvedPharmacyAppearsInAllPharmacies() {
+    public void approvedPharmacyAppearsInAllPharmacies() throws InterruptedException {
         String approvedName = TestContext.get("approvedPharmacy");
         if (approvedName == null) return;
 
         adminPage.navigateTo(ConfigReader.getProperty("base.url"));
         adminPage.clickAllPharmaciesTab();
+//        Thread.sleep(2000);
         adminPage.waitForCards();
 
         int index = adminPage.findCardIndexByName(approvedName);
@@ -358,7 +341,7 @@ public class AdminTest extends BaseTest {
     public void allPharmaciesTabHasFourFilterChips() {
         adminPage.navigateTo(ConfigReader.getProperty("base.url"));
         adminPage.clickAllPharmaciesTab();
-        int chipCount = webDriver.findElements(
+        int chipCount = getWebDriver().findElements(
                 org.openqa.selenium.By.cssSelector(".asl-fchip")).size();
         Assert.assertEquals(chipCount, 4,
                 "Expected 4 filter chips but found: " + chipCount);
@@ -535,6 +518,11 @@ public class AdminTest extends BaseTest {
             adminPage.navigateTo(ConfigReader.getProperty("base.url"));
             adminPage.clickAllPharmaciesTab();
             adminPage.clickFilterInactive();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             return adminPage.getCardCount() < inactiveCountBefore;
         });
 
@@ -578,6 +566,6 @@ public class AdminTest extends BaseTest {
         adminPage.clickLogout();
         Assert.assertTrue(adminPage.isRedirected("/"),
                 "Logout did not redirect to login. URL: "
-                        + webDriver.getCurrentUrl());
+                        + getWebDriver().getCurrentUrl());
     }
 }

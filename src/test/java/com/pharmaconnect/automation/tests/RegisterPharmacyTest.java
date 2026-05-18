@@ -16,8 +16,8 @@ public class RegisterPharmacyTest extends BaseTest {
 
     @Test(testName = "Empty Fields Validation", description = "This test is to validate that the register functionality does not work it there are empty fields")
     public void validateEmptyFields(){
-        webDriver.get(ConfigReader.getProperty("pharmacy.register.url"));
-        RegisterPharmacyPage registerPharmacyPage = pageObjectManager.getRegisterPharmacyPage();
+        getWebDriver().get(ConfigReader.getProperty("pharmacy.register.url"));
+        RegisterPharmacyPage registerPharmacyPage = getPageObjectManager().getRegisterPharmacyPage();
         registerPharmacyPage.clickRegisterButton();
         Assert.assertTrue(registerPharmacyPage.getErrorMessage().contains("Please fill in all required fields."),"The alert message was not displayed or incorrect message was displayed");
     }
@@ -50,7 +50,7 @@ public class RegisterPharmacyTest extends BaseTest {
             String confirmPassword,
             String expectedResult
     ) {
-        webDriver.get(ConfigReader.getProperty("pharmacy.register.url"));
+        getWebDriver().get(ConfigReader.getProperty("pharmacy.register.url"));
         String registerUrl = ConfigReader.getProperty("pharmacy.register.url");
 
         // ── Handle dynamically generated fields ──────────────────────
@@ -80,7 +80,7 @@ public class RegisterPharmacyTest extends BaseTest {
 
         Reporter.getCurrentTestResult().getMethod().setDescription(description);
         Reporter.getCurrentTestResult().setTestName(testName);
-        RegisterPharmacyPage page = pageObjectManager.getRegisterPharmacyPage();
+        RegisterPharmacyPage page = getPageObjectManager().getRegisterPharmacyPage();
 
         // ── Fill Pharmacy Information ─────────────────────────────────
         if (!pharmacyName.isEmpty())  page.enterPharmacyName(pharmacyName);
@@ -120,7 +120,7 @@ public class RegisterPharmacyTest extends BaseTest {
 
             Assert.assertTrue(
                     page.isRedirected(expectedResult),
-                    "Expected redirect to [" + expectedResult + "] but got: [" + webDriver.getCurrentUrl() + "]"
+                    "Expected redirect to [" + expectedResult + "] but got: [" + getWebDriver().getCurrentUrl() + "]"
             );
         }
         // ── Assert: Failure → expect error message ────────────────────

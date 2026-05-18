@@ -15,7 +15,7 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver){
         this.driver = driver;
-        this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(15));
+        this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(30));
     }
 
     private By emailInput = By.id("email");

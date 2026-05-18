@@ -1,56 +1,36 @@
 package com.pharmaconnect.automation.tests;
 
 import com.pharmaconnect.automation.base.BaseTest;
+import com.pharmaconnect.automation.base.StatefulBaseTest;
 import com.pharmaconnect.automation.pages.LoginPage;
 import com.pharmaconnect.automation.pages.MyReservationsPage;
 import com.pharmaconnect.automation.pages.SearchPage;
 import com.pharmaconnect.automation.utils.ConfigReader;
 import com.pharmaconnect.automation.utils.TestContext;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
-public class ReservationTest extends BaseTest {
+public class ReservationTest extends StatefulBaseTest {
 
     private SearchPage searchPage;
     private MyReservationsPage myReservationsPage;
 
-    // ── Override parent BeforeMethod — init driver only once ──────
-    @Override
-    @BeforeMethod
-    @Parameters("browser")
-    public void setup(String browser) {
-        if (webDriver == null) {
-            super.setup(browser);
-            loginOnce();
-        }
-        searchPage = pageObjectManager.getSearchPage();
-        myReservationsPage = pageObjectManager.getMyReservationsPage();
+
+
+    @BeforeClass
+    public void classSetup() {
+
+        searchPage = getPageObjectManager().getSearchPage();
+        myReservationsPage = getPageObjectManager().getMyReservationsPage();
+        loginOnce();
     }
 
-    // ── Override parent AfterMethod — don't quit between tests ────
-    @Override
-    @org.testng.annotations.AfterMethod(alwaysRun = true)
-    public void cleanUp() {
-        // Keep browser alive across chained tests
-    }
 
-    // ── Quit browser after ALL tests in this class ────────────────
-    @AfterClass(alwaysRun = true)
-    public void tearDownClass() {
-        TestContext.clear();
-        if (webDriver != null) {
-            webDriver.quit();
-            webDriver = null;
-        }
-    }
 
     // ── Login helper ──────────────────────────────────────────────
     private void loginOnce() {
-        webDriver.get(ConfigReader.getProperty("login.url"));
-        LoginPage loginPage = pageObjectManager.getLoginPage();
+        getWebDriver().get(ConfigReader.getProperty("login.url"));
+        LoginPage loginPage = getPageObjectManager().getLoginPage();
         loginPage.enterEmail(ConfigReader.getProperty("test.user.email"));
         loginPage.enterPassword(ConfigReader.getProperty("test.user.password"));
         loginPage.clickLoginButton();
@@ -74,7 +54,7 @@ public class ReservationTest extends BaseTest {
             testName = "Search and reserve a medicine",
             description = "Login, search for Paracetamol, click Reserve Now on the first result, enter quantity and confirm reservation")
     public void searchAndReserveMedicine() {
-        webDriver.get(ConfigReader.getProperty("search.url"));
+        getWebDriver().get(ConfigReader.getProperty("search.url"));
         searchPage.searchMedicine("Paracetamol");
         searchPage.waitForResults();
 
@@ -221,10 +201,10 @@ public class ReservationTest extends BaseTest {
     public void myReservationsRequiresLogin() {
         myReservationsPage.navigateTo(ConfigReader.getProperty("base.url"));
         myReservationsPage.clickLogout();
-        webDriver.get(ConfigReader.getProperty("my.reservations.url"));
+        getWebDriver().get(ConfigReader.getProperty("my.reservations.url"));
         Assert.assertTrue(
                 myReservationsPage.isRedirected("/login"),
-                "Expected redirect to login but got: " + webDriver.getCurrentUrl()
+                "Expected redirect to login but got: " + getWebDriver().getCurrentUrl()
         );
     }
 }
