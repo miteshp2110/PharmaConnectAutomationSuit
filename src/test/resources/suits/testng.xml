@@ -5,52 +5,52 @@
         <listener class-name="com.pharmaconnect.automation.utils.ExtentReportListener" />
     </listeners>
     <parameter name="browser" value="chrome"/>
-    <test name="Application Login Test" enabled="false">
+    <test name="Application Login Test" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.LoginTest"/>
         </classes>
     </test>
-    <test name="Application Register Test" enabled="false">
+    <test name="Application Register Test" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.RegisterTest"/>
         </classes>
     </test>
-    <test name="Register Pharmacy Test" enabled="false">
+    <test name="Register Pharmacy Test" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.RegisterPharmacyTest" />
         </classes>
     </test>
-    <test name="Search Page and functionality Test" enabled="false">
+    <test name="Search Page and functionality Test" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.SearchTest"/>
         </classes>
     </test>
-    <test name="Reservation Test" enabled="false">
+    <test name="Reservation Test" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.ReservationTest" />
         </classes>
     </test>
-    <test name="Profile Page Tests" enabled="false">
+    <test name="Profile Page Tests" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.ProfileTest" />
         </classes>
     </test>
-    <test name="Seller Tests" enabled="false">
+    <test name="Seller Tests" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.SellerTests" />
         </classes>
     </test>
-    <test name="Seller Operations Test" enabled="false">
+    <test name="Seller Operations Test" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.SellerOperationsTest" />
         </classes>
     </test>
-    <test name="Admin Seller Test" enabled="false">
+    <test name="Admin Seller Test" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.AdminTest" />
         </classes>
     </test>
-    <test name="Admin Medicines Test" enabled="false">
+    <test name="Admin Medicines Test" >
         <classes>
             <class name="com.pharmaconnect.automation.tests.AdminMedicinesTest" />
         </classes>
