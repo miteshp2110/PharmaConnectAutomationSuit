@@ -1,0 +1,160 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<!--
+    PharmaConnect — Sample Review Test Suite
+    Purpose  : Coach review demo — 15 key test cases covering all 3 roles
+    Coverage : Login · Registration · Search · Reservation · Profile ·
+               Seller Dashboard · Stock · Admin Pharmacies · Admin Medicines · Admin Documents
+    Run with : mvn test -Dsurefire.suiteXmlFiles=review-suite.xml
+-->
+
+<suite name="PharmaConnect — Review Suite (15 Tests)" parallel="tests" thread-count="3">
+
+    <listeners>
+        <listener class-name="com.pharmaconnect.automation.utils.ExtentReportListener"/>
+    </listeners>
+
+    <parameter name="browser" value="chrome"/>
+
+    <!-- ── 1. LOGIN ─────────────────────────────────────────────────────── -->
+    <!-- Covers: empty field alert + valid patient login redirect             -->
+    <test name="Login Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.LoginTest">
+                <methods>
+                    <include name="validateEmptyFields"/>
+                    <include name="validateAuthTitleForUser"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 2. PATIENT REGISTRATION ──────────────────────────────────────── -->
+    <!-- Covers: Terms checkbox validation + Sign In link navigation         -->
+    <test name="Patient Registration Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.RegisterTest">
+                <methods>
+                    <include name="validateEmptyFields"/>
+                    <include name="validateTermsAndConditions"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 3. PHARMACY REGISTRATION ─────────────────────────────────────── -->
+    <!-- Covers: empty required fields validation                            -->
+    <test name="Pharmacy Registration Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.RegisterPharmacyTest">
+                <methods>
+                    <include name="validateEmptyFields"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 4. MEDICINE SEARCH ───────────────────────────────────────────── -->
+    <!-- Covers: valid search returns results + auth guard on Reserve Now    -->
+    <test name="Search Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.SearchTest">
+                <methods>
+                    <include name="searchWithValidMedicine"/>
+                    <include name="reserveNowRedirectsToLoginWhenNotLoggedIn"/>
+                    <include name="emergencyBannerVisibleOnLoad"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 5. RESERVATION FLOW ──────────────────────────────────────────── -->
+    <!-- Covers: page title + full reserve flow (login → search → reserve)  -->
+    <test name="Reservation Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.ReservationTest">
+                <methods>
+                    <include name="verifyPageTitle"/>
+                    <include name="searchAndReserveMedicine"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 6. PATIENT PROFILE ───────────────────────────────────────────── -->
+    <!-- Covers: profile loads + all key fields display correctly            -->
+    <test name="Patient Profile Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.ProfileTest">
+                <methods>
+                    <include name="profilePageLoadsCorrectly"/>
+                    <include name="profileRoleChipShowsPatient"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 7. SELLER DASHBOARD ──────────────────────────────────────────── -->
+    <!-- Covers: dashboard loads + all 4 KPI stat cards visible             -->
+    <test name="Seller Dashboard Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.SellerTests">
+                <methods>
+                    <include name="dashboardLoadsCorrectly"/>
+                    <include name="dashboardShowsFourStatCards"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 8. STOCK MANAGEMENT ──────────────────────────────────────────── -->
+    <!-- Covers: add medicine to inventory (core seller operation)           -->
+    <test name="Stock Management Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.SellerOperationsTest">
+                <methods>
+                    <include name="addNewMedicineToInventory"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 9. ADMIN MANAGE PHARMACIES ──────────────────────────────────── -->
+    <!-- Covers: admin page loads + Pending tab default active              -->
+    <test name="Admin Pharmacies Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.AdminTest">
+                <methods>
+                    <include name="adminPageLoadsCorrectly"/>
+                    <include name="pendingTabActiveByDefault"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 10. ADMIN MEDICINE CATALOG ──────────────────────────────────── -->
+    <!-- Covers: catalog page loads with correct title                      -->
+    <test name="Admin Medicine Catalog Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.AdminMedicinesTest">
+                <methods>
+                    <include name="medicineCatalogPageLoads"/>
+                    <include name="defaultStateShowsCorrectToggleButtons"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <!-- ── 11. ADMIN PENDING DOCUMENTS ─────────────────────────────────── -->
+    <!-- Covers: page loads with correct title                              -->
+    <test name="Admin Documents Tests">
+        <classes>
+            <class name="com.pharmaconnect.automation.tests.AdminDocumentsTest">
+                <methods>
+                    <include name="pendingDocumentsPageLoads"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>
