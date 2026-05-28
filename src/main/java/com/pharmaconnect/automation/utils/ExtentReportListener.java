@@ -9,7 +9,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-public class ExtentReportListener implements ITestListener {
+public class  ExtentReportListener implements ITestListener {
 
     ExtentReports extentReports = ExtentManager.getExtentReports();
 
